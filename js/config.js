@@ -1,9 +1,11 @@
 prop = {
     //TODO Change that to the actual API address
-    'jsonqbAPIuri' : '***the actual JSON QB API implementation address***',
+    'jsonqbAPIuri' : 'http://losd.staging.derilinx.com:8082/',
 
     //TODO Insert the actual data cube URI
-    'dataCubeURI' : '***the actual Data Cube URI***'
+    // 'dataCubeURI' : 'http://ld.linked-open-statistics.org/data/HC55_ds';
+
+    'dataCubeURI' : getParameterByName('dataCubeURI')
 };
 
 //Api Responses Json Keys
@@ -49,7 +51,7 @@ uiConfig = {
     'msg_loadingError'              : "Some error occurred, please reload page.",
     'msg_wrongChart'                : "Please chose another type of chart",
     'footerSize'                    : 40,
-    'colorOGI'                      : '#e44690',         //the opengovintelligence magenta
+    'colorOGI'                      : '#1F4A86',         //the cso colour scheme
     'chartTypes'                    : ['Bar chart', 'Pie chart', 'Pie chart sorted', 'Area chart'],
     'chartTypeInitiallySelected'    : 0
 };
@@ -95,7 +97,7 @@ barConfig = {
     'barChartMinHeight'                 : 300,
     'barColor'                          : uiConfig.colorOGI,        //or e.g. "steelblue",
     'perLetterSpaceForYAxisLabels'      : 8,
-    'valueLabelFontSize'                : '11px',
+    'valueLabelFontSize'                : '14px',
     'valueLabelFontColor'               : "white",
     'valueLabelFontColor_whenExternal'  : "gray",
     'valueLabelYTransformation'         : 14,
@@ -131,3 +133,13 @@ pieConfig = {
     'legendPerLabelHeight'              : 15,
     'pieAreaHighlightColor'             : 'dimgrey'
 };
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}

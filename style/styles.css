@@ -12,6 +12,10 @@ body {
     background-color: #eee;
 }
 
+.bgr_lightBlue {
+    background-color: #c3d9ef;
+}
+
 .bgr_vlgray {
     background-color: #f8f8f8;
 }
@@ -19,6 +23,10 @@ body {
 /* the opengovintelligence magenta*/
 .color_ogi {
     color: #e44690;
+}
+
+.color_cso {
+    color: #1F4A86;
 }
 
 /* for the line separating the chart selector from the dims values */
