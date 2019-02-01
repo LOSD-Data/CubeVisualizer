@@ -1,10 +1,6 @@
 prop = {
     //TODO Change that to the actual API address
     'jsonqbAPIuri' : 'http://losd.staging.derilinx.com:8082/',
-
-    //TODO Insert the actual data cube URI
-    // 'dataCubeURI' : 'http://ld.linked-open-statistics.org/data/HC55_ds';
-
     'dataCubeURI' : getParameterByName('dataCubeURI')
 };
 
@@ -47,6 +43,7 @@ var allValues = {
 
 //user interface configuration object
 uiConfig = {
+    'msg_selectDatasets'            : "Please select dataset from the list below",
     'msg_refreshDataError'          : "Please retry pressing the Refresh button",
     'msg_loadingError'              : "Some error occurred, please reload page.",
     'msg_wrongChart'                : "Please chose another type of chart",

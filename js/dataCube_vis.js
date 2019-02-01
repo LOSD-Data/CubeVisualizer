@@ -15,6 +15,8 @@ var _ui = {                             //UI related switches and selections
 };
 
 var _dataLoaded = false;                //Will be true only when there is any available data
+var _datasets = null;                   //Will hold the datasets list
+var _datasetsLoaded = false;                //Will be true only when there is any available dataset
 
 //On load page
 $(function(){
@@ -35,11 +37,15 @@ $(function(){
                     refreshData();
                 })
                 .fail(function(){
+                    removeSelectionBar();
                     showErrorMessage(uiConfig.msg_loadingError);
                 });
         })
         .fail(function(){
             showErrorMessage(uiConfig.msg_loadingError);
+            // try to list available Data Cubes and allow to navigate
+            removeSelectionBar();
+            getDatasets();
         });
 
 });
@@ -66,6 +72,16 @@ function showErrorMessage(msg) {
 //Removes the error message
 function removeErrorMessage() {
     $("#errorMessage").empty();
+}
+
+//Shows selection bar
+function showSelectionBar() {
+    $("#selectionBar").fadeIn();
+}
+
+//Removes selection bar
+function removeSelectionBar() {
+    $("#selectionBar").fadeOut();
 }
 
 //Calls functions for getting appropriate data and for presenting them
@@ -1189,6 +1205,54 @@ function getMetadata(cubeURI) {
                 _metadata = null;
             })
     );
+}
+
+// Display list of available datasets
+function displayAvailableDataCubes() {
+
+    if (_datasets && _datasetsLoaded) {
+
+        var html = '';
+        var html_msg_selectDatasets = '<div"><h4>' + uiConfig.msg_selectDatasets + '</h4></div>';
+
+        for (dataset in _datasets){
+          html += '<li class="padding-top-bottom5">' + '<a href="/?dataCubeURI=' + _datasets[dataset]['@id'] + '">' + _datasets[dataset].label + '</a> <br/> <small>' + _datasets[dataset]['@id'] + '</small>';
+          html += '</li>';
+        }
+
+        $('#datasetsList').html(html_msg_selectDatasets + '<ul>' + html + '</ul>').fadeIn();
+
+        spinnerOff();
+
+        removeErrorMessage();
+
+    } else {
+        showErrorMessage(uiConfig.msg_loadingError);
+    }
+
+    return true;
+
+}
+
+//Get the list of available data cubes
+function getDatasets() {
+
+    return ($.get({
+            url: prop.jsonqbAPIuri + 'cubes',
+            type: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Accept-Language': 'en'
+            }
+        }).then(function(data) {
+            if ( (typeof data === 'object' ) && (typeof data.cubes === 'object' )){
+                _datasets = data.cubes
+                _datasetsLoaded = true
+                displayAvailableDataCubes()
+            }
+        }
+    ));
+
 }
 
 //Sets the _measures object or null if error or invalid
